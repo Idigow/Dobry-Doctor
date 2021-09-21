@@ -1,5 +1,5 @@
 {
-  "name": "clients",
+  "name": "clients1",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,7 +19,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "../clients/node_modules/.bin/react-scripts start",
+    "start": "react-scripts start",
     "build": "../clients/node_modules/.bin/react-scripts build",
     "test": "../clients/node_modules/.bin/react-scripts test",
     "eject": "../clients/node_modules/.bin/react-scripts eject"
