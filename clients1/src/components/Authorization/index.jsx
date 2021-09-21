@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Checkbox, makeStyles, Paper, TextField } from '@material-ui/core'
+import { Button, Checkbox, makeStyles, Paper, TextField } from '@material-ui/core'
 
 const useStyles = makeStyles(theme =>({
   auth:{
@@ -15,6 +15,11 @@ const useStyles = makeStyles(theme =>({
   chexbox: {
     margin: 0,
     padding: 0,
+  },
+  flex: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginTop: 30
   }
 }))
 const Authorization = () => {
@@ -35,7 +40,7 @@ const Authorization = () => {
          <h2 className="m-2 text-center">АВТОРИЗАЦИЯ</h2>
          <div>
            <TextField
-             id="filled-password-input"
+             id="filled-login-input"
              label="Login"
              type="login"
              autoComplete="current-login"
@@ -57,11 +62,15 @@ const Authorization = () => {
              onChange={handlePass}
            />
          </div>
-         <div>
-           <Checkbox
-             className={classes.chexbox}
-           />
-           <button>Авторизация</button>
+         <div className={classes.flex}>
+           <div>
+             <Checkbox
+               color="primary"
+               className={classes.chexbox}
+             />
+             запомнить
+           </div>
+           <Button variant="contained" color="primary">Войти</Button>
          </div>
        </Paper>
      </div>

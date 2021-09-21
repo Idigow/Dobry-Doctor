@@ -1,10 +1,13 @@
 import React from 'react'
 import Authorization from './Authorization'
+import Clients from './Clients'
+import Header from './Header'
 
 const App = () => {
   return (
     <div>
-      <Authorization/>
+      <Header/>
+      <Clients/>
     </div>
   )
 }
