@@ -6,4 +6,4 @@ router.get("/clients", clientController.getAllClients);
 router.get("/client/:id", clientController.getClientById);
 router.post("/create/client", clientController.createClient);
 
-module.exports = router;
+module.exports =  router;
