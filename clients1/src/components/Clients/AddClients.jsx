@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
-import { Button, makeStyles, Paper, TextField } from '@material-ui/core'
+import { Button, makeStyles, TextField } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { addClient } from '../../redux/ducks/clientsReducer'
-
-
 const useStyles = makeStyles(theme=>({
   wrap:{
-    width: 900,
     margin: 'auto',
-    marginTop: 50,
     padding: "0 40px 40px 40px"
   },
   inputs:{
@@ -19,17 +15,17 @@ const useStyles = makeStyles(theme=>({
   },
 
 }))
-
-const Clients = () => {
+const AddClients = () => {
   const classes = useStyles()
-  const [name, setName] = useState("");
+  const dispatch = useDispatch()
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [fathersName, setFathersName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [secondPhoneNumber, setSecondPhoneNumber] = useState("");
-  const dispatch = useDispatch
+
   const handleName = (e) =>{
-    setName(e.target.value)
+    setFirstName(e.target.value)
   }
   const handleLastName = (e) =>{
     setLastName(e.target.value)
@@ -45,26 +41,29 @@ const Clients = () => {
   }
   const handleClient = () =>{
     dispatch(
-      addClient(name, lastName, fathersName, phoneNumber, secondPhoneNumber)
+      addClient(
+        firstName,
+        lastName,
+        fathersName,
+        phoneNumber,
+        secondPhoneNumber
+      )
     );
   }
-
-
   return (
-    <Paper
-      className={classes.wrap}
-      elevation={10}
-    >
-      <h1 className="text-center p-5">Добавить клиента</h1>
+    <div className={classes.wrap}>
+      <h2 className="text-center p-4">Добавить клиента</h2>
       <div className={classes.inputs}>
         <TextField
+          autoFocus
           id="outlined-basic"
           onChange={handleName}
-          value={name}
+          value={firstName}
           variant="outlined"
           placeholder="Имя"
           className={classes.input}
           fullWidth
+          size={'small'}
         />
         <TextField
           id="outlined-basic"
@@ -74,6 +73,7 @@ const Clients = () => {
           placeholder="Фамилия"
           className={classes.input}
           fullWidth
+          size={'small'}
         />
         <TextField
           id="outlined-basic"
@@ -83,6 +83,7 @@ const Clients = () => {
           placeholder="Отчество"
           className={classes.input}
           fullWidth
+          size={'small'}
         />
         <TextField
           id="outlined-basic"
@@ -92,6 +93,8 @@ const Clients = () => {
           placeholder="Номер телефона"
           className={classes.input}
           fullWidth
+          size={'small'}
+          type="number"
         />
         <TextField
           id="outlined-basic"
@@ -101,9 +104,10 @@ const Clients = () => {
           placeholder="(Дополнительный) Номер телефона"
           className={classes.input}
           fullWidth
+          size={'small'}
+          type="number"
         />
       </div>
-
       <div>
         <Button
           variant="contained"
@@ -116,8 +120,7 @@ const Clients = () => {
           Добавить клиента
         </Button>
       </div>
-    </Paper>
+    </div>
   )
 }
-
-export default Clients
+export default AddClients

@@ -1,14 +1,11 @@
 const  CLIENTS_LOAD_START = "clients/load/start";
 const  CLIENTS_LOAD_SUCCESS = "clients/load/success";
-const  ADD_CLIENT_START = "add/client/start";
-const  ADD_CLIENT_SUCCESS = "add/client/success";
-
+const  CREATE_CLIENT = "create/client";
 
 const initState = {
   clients: [],
   loading: false
 }
-
 export const clientsReducer = (state = initState, action)=>{
   switch (action.type){
     case CLIENTS_LOAD_START:
@@ -22,12 +19,46 @@ export const clientsReducer = (state = initState, action)=>{
         clients: action.payload,
         loading: false
       }
+    case CREATE_CLIENT:
+      return {
+        ...state,
+        clients: [...state.clients, action.payload]
+      }
+    default:
+      return {
+        ...state
+      }
+
   }
 }
-
-export const addClient = (name, lastName, fathersName, phoneNumber) =>{
+export const loadClients = () =>{
   return async (dispatch)=>{
-    dispatch({type: ADD_CLIENT_START})
-    await fetch()
+    dispatch({type: CLIENTS_LOAD_START})
+    const response = await fetch("/clients")
+    const json = await response.json()
+    dispatch({
+      type: CLIENTS_LOAD_SUCCESS,
+      payload: json
+    })
+  }
+}
+export const addClient = (firstName, lastName, fathersName, phoneNumber, secondPhoneNumber) =>{
+  return async (dispatch)=>{
+    dispatch({type: CREATE_CLIENT, payload: {
+      firstName, lastName, fathersName, phoneNumber, secondPhoneNumber
+      }})
+    await fetch("/create/client",{
+      method: "POST",
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        fathersName,
+        phoneNumber,
+        secondPhoneNumber
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
   }
 }
