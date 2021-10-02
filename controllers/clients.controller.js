@@ -11,12 +11,13 @@ module.exports.clientController = {
   },
   createClient: async (req, res) => {
     try {
-      const { firstName, lastName, fatherName, phoneNumber } = req.body;
+      const { firstName, lastName, fathersName, phoneNumber, secondPhoneNumber } = req.body;
       const client = await Client.create({
         firstName,
         lastName,
-        fatherName,
+        fathersName,
         phoneNumber,
+        secondPhoneNumber
       })
       await res.json(client);
     } catch (e) {
