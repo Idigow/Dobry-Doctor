@@ -8,12 +8,15 @@ const clientSchema = new Schema(
     lastName: {
       type: String,
     },
-    fatherName: {
+    fathersName: {
       type: String
     },
     phoneNumber: {
       type: String,
     },
+    secondPhoneNumber: {
+      type: String
+    }
   },
   { timestamps: true }
 );
