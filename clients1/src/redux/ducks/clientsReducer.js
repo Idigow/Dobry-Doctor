@@ -1,6 +1,8 @@
-const  CLIENTS_LOAD_START = "clients/load/start";
-const  CLIENTS_LOAD_SUCCESS = "clients/load/success";
-const  CREATE_CLIENT = "create/client";
+const CLIENTS_LOAD_START = "clients/load/start";
+const CLIENTS_LOAD_SUCCESS = "clients/load/success";
+const CREATE_CLIENT = "create/client";
+const CLIENT_DELETE_START = "client/delete/start";
+const CLIENT_DELETE_SUCCESS = "client/delete/success";
 
 const initState = {
   clients: [],
@@ -28,7 +30,6 @@ export const clientsReducer = (state = initState, action)=>{
       return {
         ...state
       }
-
   }
 }
 export const loadClients = () =>{
@@ -38,6 +39,23 @@ export const loadClients = () =>{
     const json = await response.json()
     dispatch({
       type: CLIENTS_LOAD_SUCCESS,
+      payload: json
+    })
+  }
+}
+export const deleteClient = (id) =>{
+  return async (dispatch)=>{
+    dispatch({
+      type: CLIENT_DELETE_START,
+      payload: id
+    })
+    await fetch(`/client/:${id}`,{
+      method: "DELETE"
+    })
+    const response = await fetch("/clients")
+    const json = await response.json()
+    dispatch({
+      type: CLIENT_DELETE_SUCCESS,
       payload: json
     })
   }

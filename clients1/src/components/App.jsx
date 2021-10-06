@@ -3,6 +3,8 @@ import Authorization from './Authorization'
 import Header from './Header'
 import { useDispatch } from 'react-redux'
 import { loadClients } from '../redux/ducks/clientsReducer'
+import ClientList from './Clients/ClientList'
+import ClientList1 from './Clients/ClientList1'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -12,6 +14,7 @@ const App = () => {
   return (
     <div>
       <Header/>
+      <ClientList1/>
     </div>
   )
 }
