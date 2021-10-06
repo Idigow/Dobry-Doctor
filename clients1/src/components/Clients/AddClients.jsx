@@ -64,6 +64,7 @@ const AddClients = () => {
           className={classes.input}
           fullWidth
           size={'small'}
+          required={true}
         />
         <TextField
           id="outlined-basic"
@@ -74,6 +75,7 @@ const AddClients = () => {
           className={classes.input}
           fullWidth
           size={'small'}
+          required={true}
         />
         <TextField
           id="outlined-basic"
@@ -84,6 +86,7 @@ const AddClients = () => {
           className={classes.input}
           fullWidth
           size={'small'}
+          required={true}
         />
         <TextField
           id="outlined-basic"
@@ -95,6 +98,7 @@ const AddClients = () => {
           fullWidth
           size={'small'}
           type="number"
+          required={true}
         />
         <TextField
           id="outlined-basic"
