@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme =>({
     display: 'flex',
     alignItems: 'center'
   },
-  chexbox: {
+  checkbox: {
     margin: 0,
     padding: 0,
   },
@@ -66,7 +66,7 @@ const Authorization = () => {
            <div>
              <Checkbox
                color="primary"
-               className={classes.chexbox}
+               className={classes.checkbox}
              />
              запомнить
            </div>
