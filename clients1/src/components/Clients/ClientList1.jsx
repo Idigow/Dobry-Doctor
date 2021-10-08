@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Button,
+  Button, Dialog,
   makeStyles,
   Paper,
   Table,
@@ -9,17 +9,14 @@ import {
   TableContainer,
   TableHead,
   TablePagination,
-  TableRow, TextField
+  TableRow, TextField,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteClient } from '../../redux/ducks/clientsReducer'
-
-function createData(name, code, population, size) {
-  const density = population / size;
-  return { name, code, population, size, density };
-}
+import { useState } from 'react'
+import EditClient from './EditClient'
 
 const useStyles = makeStyles(theme =>({
   wrap:{
@@ -27,10 +24,16 @@ const useStyles = makeStyles(theme =>({
     marginTop: 50,
     margin: 'auto',
   },
+  TabHead:{
+    width: "50%"
+  },
+  Search:{
+    width: "50%"
+  }
 }))
 
 export default function ClientList1() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -45,13 +48,33 @@ export default function ClientList1() {
   const handleDelete = (id) =>{
     dispatch(deleteClient(id))
   }
-
+  const [open, setOpen] = useState(false)
+  const handleClickOpen = (id) =>{
+    setOpen(true)
+  }
+  const handleClose = () =>{
+    setOpen(false)
+  }
   return (
     <div className={classes.wrap}>
       <Paper elevation={7}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
+              <TableRow>
+                {/*<TableCell colSpan={3}>*/}
+                {/*  <Button variant="outlined" color="primary">*/}
+                {/*    Новый клиент*/}
+                {/*  </Button>*/}
+                {/*</TableCell>*/}
+                <TableCell colSpan={5} align="center">
+                  <TextField placeholder="Поиск"
+                             variant="outlined"
+                             className={classes.Search} size="small">
+
+                  </TextField>
+                </TableCell>
+              </TableRow>
               <TableRow>
                 <TableCell align="left">
                   Ф.И.О
@@ -75,7 +98,7 @@ export default function ClientList1() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((client) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={client.id}>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={client._id}>
                       <TableCell align="left" >
                         {`${client.lastName}
                         ${client.firstName} 
@@ -91,15 +114,23 @@ export default function ClientList1() {
                         <Button variant="outlined"
                                 color="primary"
                                 size="small"
+                                onClick={()=>handleClickOpen(client._id)}
                         >
                           <EditIcon></EditIcon>
                         </Button>
+                        <Dialog
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby="form-dialog"
+                        >
+                          <EditClient client={client} />
+                        </Dialog>
                       </TableCell>
                       <TableCell>
                         <Button variant="outlined"
                                 size="small"
                                 color="secondary"
-                                onClick={()=>handleDelete(client.id)}
+                                onClick={()=>handleDelete(client._id)}
                         >
                           <DeleteIcon></DeleteIcon>
                         </Button>
