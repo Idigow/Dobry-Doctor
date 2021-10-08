@@ -26,6 +26,16 @@ export const clientsReducer = (state = initState, action)=>{
         ...state,
         clients: [...state.clients, action.payload]
       }
+    case CLIENT_DELETE_SUCCESS:
+      return {
+        ...state,
+        clients: state.clients.filter((client)=>{
+          if (client._id !== action.payload){
+            return true
+          }
+          return false
+        })
+      }
     default:
       return {
         ...state
@@ -47,16 +57,13 @@ export const deleteClient = (id) =>{
   return async (dispatch)=>{
     dispatch({
       type: CLIENT_DELETE_START,
-      payload: id
     })
-    await fetch(`/client/:${id}`,{
+    await fetch(`/remove/client/${id}`,{
       method: "DELETE"
     })
-    const response = await fetch("/clients")
-    const json = await response.json()
     dispatch({
       type: CLIENT_DELETE_SUCCESS,
-      payload: json
+      payload: id
     })
   }
 }
@@ -79,4 +86,7 @@ export const addClient = (firstName, lastName, fathersName, phoneNumber, secondP
       },
     })
   }
+}
+export const editClient = () =>{
+
 }

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import {
   AppBar, Button, ButtonGroup, Dialog,
   makeStyles, Toolbar, Typography
-
 } from '@material-ui/core'
 
 import AddClients from '../Clients/AddClients'
@@ -14,7 +13,6 @@ const useStyles = makeStyles({
     }
   }
 })
-
 const Header = () => {
   const [open, setOpen] = useState(false)
   const handleClickOpen = () =>{
