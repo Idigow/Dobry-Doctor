@@ -1,5 +1,5 @@
 {
-  "name": "Dobry-Doctor",
+  "name": "dobry-doctor",
   "version": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
@@ -30,8 +30,9 @@
     "mongoose": "^6.0.6"
   },
   "devDependencies": {
+    "concurrently": "^6.2.1",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.12",
-    "prettier": "^2.4.1",
-    "concurrently": "^6.2.1"
+    "prettier": "^2.4.1"
   }
 }
