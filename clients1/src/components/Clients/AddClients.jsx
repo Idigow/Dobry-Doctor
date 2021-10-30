@@ -7,9 +7,6 @@ const useStyles = makeStyles(theme=>({
     margin: 'auto',
     padding: "0 40px 40px 40px"
   },
-  inputs:{
-
-  },
   input:{
     marginTop: 20,
   },

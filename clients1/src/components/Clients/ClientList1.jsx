@@ -48,12 +48,21 @@ export default function ClientList1() {
   const handleDelete = (id) =>{
     dispatch(deleteClient(id))
   }
-  const [open, setOpen] = useState(false)
-  const handleClickOpen = (id) =>{
-    setOpen(true)
+  const [open, setOpen] = useState({
+    value: "",
+    open: false
+  })
+  const handleClickOpen = (client) =>{
+    setOpen({
+      value: client,
+      open: true
+    })
   }
   const handleClose = () =>{
-    setOpen(false)
+    setOpen({
+      value: '',
+      open: false
+    })
   }
   return (
     <div className={classes.wrap}>
@@ -62,11 +71,6 @@ export default function ClientList1() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {/*<TableCell colSpan={3}>*/}
-                {/*  <Button variant="outlined" color="primary">*/}
-                {/*    Новый клиент*/}
-                {/*  </Button>*/}
-                {/*</TableCell>*/}
                 <TableCell colSpan={5} align="center">
                   <TextField placeholder="Поиск"
                              variant="outlined"
@@ -114,16 +118,16 @@ export default function ClientList1() {
                         <Button variant="outlined"
                                 color="primary"
                                 size="small"
-                                onClick={()=>handleClickOpen(client._id)}
+                                onClick={()=>handleClickOpen(client)}
                         >
                           <EditIcon></EditIcon>
                         </Button>
                         <Dialog
-                          open={open}
+                          open={open.open}
                           onClose={handleClose}
                           aria-labelledby="form-dialog"
                         >
-                          <EditClient client={client} />
+                          <EditClient open={open.value} />
                         </Dialog>
                       </TableCell>
                       <TableCell>

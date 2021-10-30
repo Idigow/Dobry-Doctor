@@ -3,10 +3,15 @@ const CLIENTS_LOAD_SUCCESS = "clients/load/success";
 const CREATE_CLIENT = "create/client";
 const CLIENT_DELETE_START = "client/delete/start";
 const CLIENT_DELETE_SUCCESS = "client/delete/success";
+const CLIENT_EDIT_START = "client/edit/start";
+const CLIENT_EDIT_SUCCESS = "client/edit/success";
+const CLIENT_EDIT_ERROR = "client/edit/error";
 
 const initState = {
   clients: [],
-  loading: false
+  loading: false,
+  error: null,
+  editing: false
 }
 export const clientsReducer = (state = initState, action)=>{
   switch (action.type){
@@ -34,6 +39,21 @@ export const clientsReducer = (state = initState, action)=>{
             return true
           }
           return false
+        })
+      }
+    case CLIENT_EDIT_START:
+      return {
+        ...state,
+        editing: true
+      }
+    case CLIENT_EDIT_SUCCESS:
+      return {
+        ...state,
+        clients: state.clients.map((item)=>{
+          if (item._id !== action.payload._id){
+            return item
+          }
+          return action.payload
         })
       }
     default:
@@ -87,6 +107,34 @@ export const addClient = (firstName, lastName, fathersName, phoneNumber, secondP
     })
   }
 }
-export const editClient = () =>{
-
+export const editClient = (firstName, lastName,
+  fathersName, phoneNumber, secondPhoneNumber, id) =>{
+  return async (dispatch)=>{
+    dispatch({type: CLIENT_EDIT_START})
+    const response = await fetch(`/update/client/${id}`,{
+      method: "PATCH",
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        fathersName,
+        phoneNumber,
+        secondPhoneNumber
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+    const json =  response.json()
+    if (json.error){
+      dispatch({
+        type: CLIENT_EDIT_ERROR,
+        payload: json.error
+      })
+    }else {
+      dispatch({
+        type: CLIENT_EDIT_SUCCESS,
+        payload: json
+      })
+    }
+  }
 }
