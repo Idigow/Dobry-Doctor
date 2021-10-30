@@ -1,30 +1,27 @@
 import React, { useState } from 'react'
 import { Button, makeStyles, TextField } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
-import { addClient, editClient } from '../../redux/ducks/clientsReducer'
+import { editClient } from '../../redux/ducks/clientsReducer'
 
 const useStyles = makeStyles(theme=>({
   wrap:{
     margin: 'auto',
     padding: "0 40px 40px 40px"
   },
-  inputs:{
-
-  },
   input:{
     marginTop: 20,
   },
-
 }))
 
-const EditClient = ({client}) => {
+const EditClient = ({open}) => {
+  console.log(open)
   const classes = useStyles()
   const dispatch = useDispatch()
-  const [firstName, setFirstName] = useState(client.firstName);
-  const [lastName, setLastName] = useState(client.lastName);
-  const [fathersName, setFathersName] = useState(client.fathersName);
-  const [phoneNumber, setPhoneNumber] = useState(client.phoneNumber);
-  const [secondPhoneNumber, setSecondPhoneNumber] = useState(client.secondPhoneNumber);
+  const [firstName, setFirstName] = useState(open.firstName);
+  const [lastName, setLastName] = useState(open.lastName);
+  const [fathersName, setFathersName] = useState(open.fathersName);
+  const [phoneNumber, setPhoneNumber] = useState(open.phoneNumber);
+  const [secondPhoneNumber, setSecondPhoneNumber] = useState(open.secondPhoneNumber);
 
   const handleName = (e) =>{
     setFirstName(e.target.value)
@@ -41,14 +38,15 @@ const EditClient = ({client}) => {
   const handleSecondPhoneNumber = (e) =>{
     setSecondPhoneNumber(e.target.value)
   }
-  const handleClient = () =>{
+  const handleClient = (id) =>{
     dispatch(
       editClient(
         firstName,
         lastName,
         fathersName,
         phoneNumber,
-        secondPhoneNumber
+        secondPhoneNumber,
+        id
       )
     );
   }
@@ -120,7 +118,7 @@ const EditClient = ({client}) => {
           color="primary"
           size="large"
           className="mt-4"
-          onClick={handleClient}
+          onClick={()=>handleClient(open._id)}
           fullWidth
         >
           Сохранить изменения
