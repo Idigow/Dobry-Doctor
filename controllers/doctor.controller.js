@@ -1,25 +1,25 @@
-const User = require("../models/User.model");
+const Doctor = require("../models/Doctor.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-module.exports.userController = {
-  getAllUsers: async (req, res) => {
-    const users = await User.find();
-    res.json(users);
+module.exports.doctorController = {
+  getAllDoctors: async (req, res) => {
+    const doctor = await Doctor.find();
+    res.json(doctor);
   },
-  getUsersId: async (req, res) => {
-    const user = await User.findById(req.user.id, { password: 0 });
-    await res.json(user);
+  getDoctorsId: async (req, res) => {
+    const doctor = await Doctor.findById(req.user.id, { password: 0 });
+    await res.json(doctor);
   },
 
-  registerUser: async (req, res) => {
+  register: async (req, res) => {
     try {
       const { name, login, password } = req.body;
       const hash = await bcrypt.hash(
         password.toString(),
         Number(process.env.BCRYPT_ROUNDS)
       );
-      const user = await User.create({
+      const doctor = await Doctor.create({
         name: name,
         login: login,
         password: hash,
@@ -34,7 +34,7 @@ module.exports.userController = {
           error: "password не найден",
         });
       }
-      await res.json(user);
+      await res.json(doctor);
     } catch (e) {
       return res.status(400).json({
         error: "Ошибка при регистрации" + e.toString(),
@@ -44,7 +44,7 @@ module.exports.userController = {
 
   login: async (req, res) => {
     const { login, password } = req.body;
-    const candidate = await User.findOne({ login });
+    const candidate = await Doctor.findOne({ login });
     if (!candidate) {
       return res.status(401).json({
         error: "Неверный данные (login)",
