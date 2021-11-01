@@ -66,6 +66,7 @@ module.exports.clientController = {
         },
         { new: true }
       );
+      console.log(client)
       res.json(client)
     } catch (e) {
       return res.status(400).json({
