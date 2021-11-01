@@ -8,133 +8,165 @@ const CLIENT_EDIT_SUCCESS = "client/edit/success";
 const CLIENT_EDIT_ERROR = "client/edit/error";
 
 const initState = {
+  clientId: '',
   clients: [],
   loading: false,
   error: null,
-  editing: false
-}
-export const clientsReducer = (state = initState, action)=>{
-  switch (action.type){
+  editing: false,
+};
+export const clientsReducer = (state = initState, action) => {
+  switch (action.type) {
     case CLIENTS_LOAD_START:
-      return{
+      return {
         ...state,
-        loading: true
-      }
+        loading: true,
+      };
     case CLIENTS_LOAD_SUCCESS:
       return {
         ...state,
         clients: action.payload,
-        loading: false
-      }
+        loading: false,
+      };
     case CREATE_CLIENT:
       return {
         ...state,
-        clients: [...state.clients, action.payload]
-      }
+        clients: [...state.clients, action.payload],
+      };
     case CLIENT_DELETE_SUCCESS:
       return {
         ...state,
-        clients: state.clients.filter((client)=>{
-          if (client._id !== action.payload){
-            return true
+        clients: state.clients.filter((client) => {
+          if (client._id !== action.payload) {
+            return true;
           }
-          return false
-        })
-      }
+          return false;
+        }),
+      };
     case CLIENT_EDIT_START:
       return {
         ...state,
-        editing: true
-      }
+        editing: true,
+        clientId: action.payload
+      };
     case CLIENT_EDIT_SUCCESS:
       return {
         ...state,
-        clients: state.clients.map((item)=>{
-          if (item._id !== action.payload._id){
-            return item
+        clients: state.clients.map((item) => {
+          if (item._id !== action.payload._id) {
+            return item;
           }
-          return action.payload
-        })
-      }
+          return action.payload;
+        }),
+        editing: false,
+      };
     default:
       return {
-        ...state
-      }
+        ...state,
+      };
   }
-}
-export const loadClients = () =>{
-  return async (dispatch)=>{
-    dispatch({type: CLIENTS_LOAD_START})
-    const response = await fetch("/clients")
-    const json = await response.json()
+};
+export const loadClients = () => {
+  return async (dispatch) => {
+    dispatch({ type: CLIENTS_LOAD_START });
+    const response = await fetch("/clients");
+    const json = await response.json();
     dispatch({
       type: CLIENTS_LOAD_SUCCESS,
-      payload: json
-    })
-  }
-}
-export const deleteClient = (id) =>{
-  return async (dispatch)=>{
+      payload: json,
+    });
+  };
+};
+export const deleteClient = (id) => {
+  return async (dispatch) => {
     dispatch({
       type: CLIENT_DELETE_START,
-    })
-    await fetch(`/remove/client/${id}`,{
-      method: "DELETE"
-    })
+    });
+    await fetch(`/remove/client/${id}`, {
+      method: "DELETE",
+    });
     dispatch({
       type: CLIENT_DELETE_SUCCESS,
-      payload: id
-    })
-  }
-}
-export const addClient = (firstName, lastName, fathersName, phoneNumber, secondPhoneNumber) =>{
-  return async (dispatch)=>{
-    dispatch({type: CREATE_CLIENT, payload: {
-      firstName, lastName, fathersName, phoneNumber, secondPhoneNumber
-      }})
-    await fetch("/create/client",{
+      payload: id,
+    });
+  };
+};
+export const addClient = (
+  firstName,
+  lastName,
+  fathersName,
+  phoneNumber,
+  secondPhoneNumber
+) => {
+  return async (dispatch) => {
+    dispatch({
+      type: CREATE_CLIENT,
+      payload: {
+        firstName,
+        lastName,
+        fathersName,
+        phoneNumber,
+        secondPhoneNumber,
+      },
+    });
+    await fetch("/create/client", {
       method: "POST",
       body: JSON.stringify({
         firstName,
         lastName,
         fathersName,
         phoneNumber,
-        secondPhoneNumber
+        secondPhoneNumber,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
-    })
-  }
-}
-export const editClient = (firstName, lastName,
-  fathersName, phoneNumber, secondPhoneNumber, id) =>{
-  return async (dispatch)=>{
-    dispatch({type: CLIENT_EDIT_START})
-    const response = await fetch(`/update/client/${id}`,{
+    });
+  };
+};
+export const editClient = (
+  firstName,
+  lastName,
+  fathersName,
+  phoneNumber,
+  secondPhoneNumber,
+  _id
+) => {
+  return async (dispatch) => {
+    dispatch({
+      type: CLIENT_EDIT_START,
+      payload: _id,
+    });
+    await fetch(`/update/client/${_id}`, {
       method: "PATCH",
       body: JSON.stringify({
         firstName,
         lastName,
         fathersName,
         phoneNumber,
-        secondPhoneNumber
+        secondPhoneNumber,
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
-    })
-    const json =  response.json()
-    if (json.error){
+    });
+    const json = {
+      _id,
+      firstName,
+      lastName,
+      fathersName,
+      phoneNumber,
+      secondPhoneNumber,
+    };
+    if (json.error) {
       dispatch({
         type: CLIENT_EDIT_ERROR,
-        payload: json.error
-      })
-    }else {
+        payload: json.error,
+      });
+    } else {
       dispatch({
         type: CLIENT_EDIT_SUCCESS,
-        payload: json
-      })
+        payload: json,
+      });
     }
-  }
-}
+  };
+};

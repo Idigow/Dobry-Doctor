@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteClient } from '../../redux/ducks/clientsReducer'
 import { useState } from 'react'
 import EditClient from './EditClient'
+import ClientListItem from './ClientListItem'
 
 const useStyles = makeStyles(theme =>({
   wrap:{
@@ -33,7 +34,6 @@ const useStyles = makeStyles(theme =>({
 }))
 
 export default function ClientList1() {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -45,25 +45,6 @@ export default function ClientList1() {
     setPage(0);
   };
   const clientsList = useSelector(state => state.clients.clients);
-  const handleDelete = (id) =>{
-    dispatch(deleteClient(id))
-  }
-  const [open, setOpen] = useState({
-    value: "",
-    open: false
-  })
-  const handleClickOpen = (client) =>{
-    setOpen({
-      value: client,
-      open: true
-    })
-  }
-  const handleClose = () =>{
-    setOpen({
-      value: '',
-      open: false
-    })
-  }
   return (
     <div className={classes.wrap}>
       <Paper elevation={7}>
@@ -74,8 +55,8 @@ export default function ClientList1() {
                 <TableCell colSpan={5} align="center">
                   <TextField placeholder="Поиск"
                              variant="outlined"
-                             className={classes.Search} size="small">
-
+                             className={classes.Search} size="small"
+                  >
                   </TextField>
                 </TableCell>
               </TableRow>
@@ -102,44 +83,7 @@ export default function ClientList1() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((client) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={client._id}>
-                      <TableCell align="left" >
-                        {`${client.lastName}
-                        ${client.firstName} 
-                        ${client.fathersName}`}
-                      </TableCell>
-                      <TableCell align="center">
-                        {client.phoneNumber}
-                      </TableCell>
-                      <TableCell align="center">
-                        {client.secondPhoneNumber}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="outlined"
-                                color="primary"
-                                size="small"
-                                onClick={()=>handleClickOpen(client)}
-                        >
-                          <EditIcon></EditIcon>
-                        </Button>
-                        <Dialog
-                          open={open.open}
-                          onClose={handleClose}
-                          aria-labelledby="form-dialog"
-                        >
-                          <EditClient open={open.value} />
-                        </Dialog>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="outlined"
-                                size="small"
-                                color="secondary"
-                                onClick={()=>handleDelete(client._id)}
-                        >
-                          <DeleteIcon></DeleteIcon>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    <ClientListItem client={client}/>
                   );
                 })}
             </TableBody>

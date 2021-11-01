@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, makeStyles, TextField } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { editClient } from '../../redux/ducks/clientsReducer'
-
 const useStyles = makeStyles(theme=>({
   wrap:{
     margin: 'auto',
@@ -12,9 +11,7 @@ const useStyles = makeStyles(theme=>({
     marginTop: 20,
   },
 }))
-
-const EditClient = ({open}) => {
-  console.log(open)
+const EditClient = ({open,setOpen}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [firstName, setFirstName] = useState(open.firstName);
@@ -38,7 +35,7 @@ const EditClient = ({open}) => {
   const handleSecondPhoneNumber = (e) =>{
     setSecondPhoneNumber(e.target.value)
   }
-  const handleClient = (id) =>{
+  const handleClient = (_id) =>{
     dispatch(
       editClient(
         firstName,
@@ -46,9 +43,13 @@ const EditClient = ({open}) => {
         fathersName,
         phoneNumber,
         secondPhoneNumber,
-        id
+        _id
       )
     );
+    setOpen({
+      value: '',
+      open: false
+    })
   }
   return (
     <div className={classes.wrap}>
