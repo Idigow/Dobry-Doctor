@@ -58,7 +58,7 @@ const ClientListItem = ({client}) => {
                 onClick={()=>handleClickOpen(client)}
                 handleClose={handleClose}
         >
-          <EditIcon></EditIcon>
+          <EditIcon> </EditIcon>
         </Button>
         <Dialog
           open={open.open}

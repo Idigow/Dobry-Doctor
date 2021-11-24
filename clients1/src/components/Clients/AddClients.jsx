@@ -10,9 +10,8 @@ const useStyles = makeStyles(theme=>({
   input:{
     marginTop: 20,
   },
-
 }))
-const AddClients = () => {
+const AddClients = ({setOpen}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [firstName, setFirstName] = useState("");
@@ -20,6 +19,7 @@ const AddClients = () => {
   const [fathersName, setFathersName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [secondPhoneNumber, setSecondPhoneNumber] = useState("");
+  const [error, setError] = useState(false);
 
   const handleName = (e) =>{
     setFirstName(e.target.value)
@@ -37,20 +37,26 @@ const AddClients = () => {
     setSecondPhoneNumber(e.target.value)
   }
   const handleClient = () =>{
-    dispatch(
-      addClient(
-        firstName,
-        lastName,
-        fathersName,
-        phoneNumber,
-        secondPhoneNumber
-      )
-    );
+    if (firstName === "" || lastName === "" || fathersName === "" || phoneNumber === ""){
+      setError(true)
+    }else {
+      dispatch(
+        addClient(
+          firstName,
+          lastName,
+          fathersName,
+          phoneNumber,
+          secondPhoneNumber
+        )
+      );
+      setOpen(false)
+    }
   }
   return (
     <div className={classes.wrap}>
-      <h2 className="text-center p-4">Добавить клиента</h2>
+      <h2 className="text-center p-4">Добавление клиента</h2>
       <div className={classes.inputs}>
+        <h5>{error ? "Заполните обязательные поля!": ""}</h5>
         <TextField
           autoFocus
           id="outlined-basic"
@@ -62,6 +68,7 @@ const AddClients = () => {
           fullWidth
           size={'small'}
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
@@ -73,6 +80,7 @@ const AddClients = () => {
           fullWidth
           size={'small'}
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
@@ -84,6 +92,7 @@ const AddClients = () => {
           fullWidth
           size={'small'}
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
@@ -96,6 +105,7 @@ const AddClients = () => {
           size={'small'}
           type="number"
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
