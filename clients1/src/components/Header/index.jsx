@@ -4,7 +4,6 @@ import {
   makeStyles, Toolbar, Typography
 } from '@material-ui/core'
 
-import AddClients from '../Clients/AddClients'
 const useStyles = makeStyles({
   root: {
     "& button": {
@@ -14,13 +13,7 @@ const useStyles = makeStyles({
   }
 })
 const Header = () => {
-  const [open, setOpen] = useState(false)
-  const handleClickOpen = () =>{
-    setOpen(true)
-  }
-  const handleClose = () =>{
-    setOpen(false)
-  }
+
 const classes = useStyles()
   return (
     <div>
@@ -29,18 +22,6 @@ const classes = useStyles()
           <Typography variant="h5">
             Добрый Доктор
           </Typography>
-          <ButtonGroup className={classes.root}>
-            <Button onClick={handleClickOpen}>Добавить клиента</Button>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-            aria-labelledby="form-dialog"
-            >
-              <AddClients/>
-            </Dialog>
-            <Button>Two</Button>
-            <Button>Three</Button>
-          </ButtonGroup>
         </Toolbar>
       </AppBar>
     </div>

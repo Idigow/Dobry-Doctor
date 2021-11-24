@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-  Button, Dialog,
+  Button, ButtonGroup, Dialog,
   makeStyles,
   Paper,
   Table,
@@ -11,13 +11,10 @@ import {
   TablePagination,
   TableRow, TextField,
 } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import { useDispatch, useSelector } from 'react-redux'
-import { deleteClient } from '../../redux/ducks/clientsReducer'
+import { useSelector } from 'react-redux'
 import { useState } from 'react'
-import EditClient from './EditClient'
 import ClientListItem from './ClientListItem'
+import AddClients from './AddClients'
 
 const useStyles = makeStyles(theme =>({
   wrap:{
@@ -37,6 +34,14 @@ export default function ClientList1() {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [open, setOpen] = useState(false)
+  const [filter, setFilter] = useState('')
+  const clientsList = useSelector(state =>{
+    return state.clients.clients.filter(item => {
+      return item.firstName
+    })
+  } );
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -44,7 +49,13 @@ export default function ClientList1() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const clientsList = useSelector(state => state.clients.clients);
+  const handleClickOpen = () =>{
+    setOpen(true)
+  }
+  const handleClose = () =>{
+    setOpen(false)
+  }
+
   return (
     <div className={classes.wrap}>
       <Paper elevation={7}>
@@ -52,10 +63,24 @@ export default function ClientList1() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell colSpan={5} align="center">
-                  <TextField placeholder="Поиск"
-                             variant="outlined"
-                             className={classes.Search} size="small"
+                <TableCell>
+                  <ButtonGroup className={classes.root}>
+                    <Button onClick={handleClickOpen}>Добавить клиента</Button>
+                    <Dialog
+                      open={open}
+                      onClose={handleClose}
+                      aria-labelledby="form-dialog"
+                    >
+                      <AddClients setOpen={setOpen}/>
+                    </Dialog>
+                  </ButtonGroup>
+                </TableCell>
+                <TableCell colSpan={5} align="right">
+                  <TextField
+                     placeholder="Поиск"
+                     variant="outlined"
+                     className={classes.Search} size="small"
+                     onChange={(e)=>setFilter(e.target.value)}
                   >
                   </TextField>
                 </TableCell>

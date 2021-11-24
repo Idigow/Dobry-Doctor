@@ -19,6 +19,8 @@ const EditClient = ({open,setOpen}) => {
   const [fathersName, setFathersName] = useState(open.fathersName);
   const [phoneNumber, setPhoneNumber] = useState(open.phoneNumber);
   const [secondPhoneNumber, setSecondPhoneNumber] = useState(open.secondPhoneNumber);
+  const [error, setError] = useState(false);
+
 
   const handleName = (e) =>{
     setFirstName(e.target.value)
@@ -36,25 +38,31 @@ const EditClient = ({open,setOpen}) => {
     setSecondPhoneNumber(e.target.value)
   }
   const handleClient = (_id) =>{
-    dispatch(
-      editClient(
-        firstName,
-        lastName,
-        fathersName,
-        phoneNumber,
-        secondPhoneNumber,
-        _id
-      )
-    );
-    setOpen({
-      value: '',
-      open: false
-    })
+    if (firstName === "" || lastName === "" || fathersName === "" || phoneNumber === ""){
+      setError(true)
+    }else {
+      dispatch(
+        editClient(
+          firstName,
+          lastName,
+          fathersName,
+          phoneNumber,
+          secondPhoneNumber,
+          _id
+        )
+      );
+      setOpen({
+        value: '',
+        open: false
+      })
+    }
+
   }
   return (
     <div className={classes.wrap}>
       <h2 className="text-center p-4">Изменить данные</h2>
       <div className={classes.inputs}>
+        <h5>{error ? "Заполните обязательные поля!": ""}</h5>
         <TextField
           autoFocus
           id="outlined-basic"
@@ -66,6 +74,7 @@ const EditClient = ({open,setOpen}) => {
           fullWidth
           size={'small'}
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
@@ -77,6 +86,7 @@ const EditClient = ({open,setOpen}) => {
           fullWidth
           size={'small'}
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
@@ -88,6 +98,7 @@ const EditClient = ({open,setOpen}) => {
           fullWidth
           size={'small'}
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
@@ -100,6 +111,7 @@ const EditClient = ({open,setOpen}) => {
           size={'small'}
           type="number"
           required={true}
+          error={error}
         />
         <TextField
           id="outlined-basic"
